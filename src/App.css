@@ -1,0 +1,44 @@
+
+body {
+  body {
+    background-color: beige;
+    font-family: cursive;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  
+  }
+  #root{
+    width: 100%;
+    height: 100%;
+  }
+  
+  .app{
+  text-align: center;
+  width: 100%;
+  display: flex;
+
+  align-items: center;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: aquamarine;
+  color: black;
+  padding: 1rem;
+  width: 100%; 
+  box-sizing: border-box; 
+}
+.logo{ margin-left: 10px;}
+  
+
+ 
+  .item-list-container {
+    font-weight: bold;
+    padding: 1rem;
+    display: flex;
+  justify-content: center; 
+  align-items: center; 
+  }
+  
