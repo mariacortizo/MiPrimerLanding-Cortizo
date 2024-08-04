@@ -1,13 +1,15 @@
 import React from 'react'
 import './Button.css'
-const Button =({texto, color}) => {
+ const Button = ({texto, color, funcion}) => {
 
-   
+ 
     
     return (
-        <button className={color} > {texto}</button>
+        <button className={color}  onClick={funcion}> {texto}</button>
 
     )
+
 }
+
 
 export default Button
