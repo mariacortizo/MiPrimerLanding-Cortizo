@@ -1,53 +1,46 @@
-
-import React, { useEffect, useState} from 'react'
-import {  getProductById } from '../asyncmock'
-import { useParams } from 'react-router-dom'
-
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ItemDetail from './ItemDetail';
+import { db } from '../servicios/firebaseConfig';
+import { getDoc, doc } from 'firebase/firestore';
 
 const ItemDetailContainer = () => {
-  const [prod, setProd] =useState({})
-  const [cargando, setCargando] = useState(true)
-  //const { id} = useParams ()
- const[id,setId] = useState (1) 
+  const { id } = useParams();
+  const [prod, setProd] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
- useEffect(() =>{
-  setCargando(true)
-  
-  getProductById(id)
-  .then(res =>{ setProd(res)
-  setCargando (false)
- })
+  useEffect(() => {
+    setCargando(true);
 
- }, [id]
+    const productRef = doc(db, "productos", id);
 
- )
- 
- const mostrarSiguiente =()  =>{
- setId(id +1)
- }
- const mostrarAnterior =()  =>{
-  setId(id -1)
+    getDoc(productRef)
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          
+          setProd({ id: snapshot.id, ...snapshot.data() });
+        } else {
+          console.log("No such document!");
+          setProd(null);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        setProd(null);
+      })
+      .finally(() => setCargando(false));
+
+  }, [id]);
+
+  if (cargando) {
+    return <h5>Cargando....</h5>;
   }
 
-  console.log(id)
-  if(cargando){
-    return(<h5>Cargando....</h5>)
-  }
   return (
-    <div className='card'>
-      <h3>
-        {prod.nombre}
-        </h3>
-       <img className='foto' src={prod.imagen} alt=""/>
+    <>
+      {prod ? <ItemDetail prod={prod} /> : <h5>No se encontró el producto</h5>}
+    </>
+  );
+};
 
-      <p>{prod.precio}</p>
-      <p> {prod.categoria}</p>
-  <div className='anterior'>
-  <button className="btn" onClick={mostrarAnterior}> ver anterior</button>
-  <button className='btn' onClick={mostrarSiguiente}> ver siguiente</button>
-  </div>
-    </div>
-  )
-}
-
-export default ItemDetailContainer
+export default ItemDetailContainer;
